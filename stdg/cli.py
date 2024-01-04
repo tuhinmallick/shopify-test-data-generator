@@ -10,7 +10,7 @@ __author__ = 'paulsaumets'
 
 def command_line_run():
     # make sure at least one argument was passed before we jump into argparse
-    if not len(sys.argv) > 1:
+    if len(sys.argv) <= 1:
         print("usage: stdg [-h] [--version] {orders,customers,products} ...")
         return
 

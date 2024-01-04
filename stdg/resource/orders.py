@@ -26,7 +26,7 @@ class Orders(object):
 
         customer_data = customer.generate_data()
 
-        order = {
+        return {
             'customer': customer_data,
             'shipping_address': {
                 'first_name': customer_data['first_name'],
@@ -36,11 +36,10 @@ class Orders(object):
                 'city': customer_data['addresses'][0]['city'],
                 'province_code': customer_data['addresses'][0]['province_code'],
                 'zip': customer_data['addresses'][0]['zip'],
-                'country': 'US'
+                'country': 'US',
             },
-            'line_items': cls.line_items_create()
+            'line_items': cls.line_items_create(),
         }
-        return order
 
     def line_items_create(self):
 
@@ -51,7 +50,7 @@ class Orders(object):
 
         # get a random # of products (aka line_items) for this purchase.
         products = random.sample(self.products, sample_size)
-        print("Total Products Purchased In Order: {}\n".format(len(products)))
+        print(f"Total Products Purchased In Order: {len(products)}\n")
 
         for product in products:
             if len(product.variants) < int(self.settings['MAX_VARIANTS']):
@@ -61,17 +60,16 @@ class Orders(object):
                 sample_size = random.randint(1, int(self.settings['MAX_VARIANTS']))
                 variants = random.sample(product.variants, sample_size)
 
-            for variant in variants:
-                line_items.append(
-                    dict(id=product.id, variant_id=variant.id,
-                         quantity=random.randint(1, int(self.settings['MAX_QUANTITY'])),
-                         # fulfillment_service=self.settings['FULFILLMENT_SERVICE'], 
-                         fulfillment_status=self.settings['FULFILLMENT_STATUS']
-                    )
+            line_items.extend(
+                dict(
+                    id=product.id,
+                    variant_id=variant.id,
+                    quantity=random.randint(1, int(self.settings['MAX_QUANTITY'])),
+                    # fulfillment_service=self.settings['FULFILLMENT_SERVICE'],
+                    fulfillment_status=self.settings['FULFILLMENT_STATUS'],
                 )
-
-
-
+                for variant in variants
+            )
         return line_items
 
 
@@ -83,7 +81,7 @@ class Orders(object):
         orders_created = []
         customers_created = []
 
-        print("Total Products Sampling From: {}\n".format(len(self.products)))
+        print(f"Total Products Sampling From: {len(self.products)}\n")
 
         for counter in range(number_orders):
 
