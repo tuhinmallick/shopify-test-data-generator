@@ -6,8 +6,7 @@ settings = configparser.ConfigParser()
 settings.read('stdg.ini')
 
 store_settings = settings['shopify']
-shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-    store_settings['API_KEY'], store_settings['API_PASS'], store_settings['STORE'])
+shop_url = f"https://{store_settings['API_KEY']}:{store_settings['API_PASS']}@{store_settings['STORE']}.myshopify.com/admin"
 shopify.ShopifyResource.set_site(shop_url)
 
 postal_data = pd.read_csv("zip-codes.txt", header=None, converters={0: lambda x: str(x)})

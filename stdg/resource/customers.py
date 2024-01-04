@@ -25,11 +25,10 @@ class Customers(object):
         # config.postal_data is a DataFrame object from the pandas library.
         state_info = config.postal_data.sample(n=1)
 
-        customer = {
+        return {
             'first_name': first_name,
             'last_name': last_name,
-            'email': "notrealisatestsorry" + first_name + "@" + fake.free_email_domain(), # Where we could have an email
-            # 'phone': fake.phone_number(), # can be invalid
+            'email': f"notrealisatestsorry{first_name}@{fake.free_email_domain()}",
             'addresses': [
                 {
                     'address1': fake.street_address(),
@@ -39,12 +38,10 @@ class Customers(object):
                     'zip': str(state_info.iloc[0]['postal_code']),
                     'last_name': first_name,
                     'first_name': last_name,
-                    'country': 'US'
+                    'country': 'US',
                 }
             ],
         }
-        
-        return customer
 
     # instance methods
 
